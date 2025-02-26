@@ -1,132 +1,80 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReadWriteLock;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAlumnos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.utilidades.MySQL;
 
 import javax.naming.OperationNotSupportedException;
 
 public class Alumnos implements IAlumnos {
-
-    private Connection conexion;
-    private static Alumnos instancia;
+    private final ArrayList<Alumno> coleccionAlumnos;
 
 
     public Alumnos() {
-        comenzar();
-    }
-
-    public static Alumnos getInstancia() {
-        if (instancia == null) {
-            instancia = new Alumnos();
-        }
-        return instancia;
+        this.coleccionAlumnos = new ArrayList<>();
     }
 
     @Override
     public void comenzar() {
-        conexion = MySQL.establecerConexion();
     }
 
     @Override
     public void terminar() {
-        MySQL.cerrarConexion();
+
     }
 
-    public ArrayList<Alumno> get() throws SQLException {
-        ArrayList<Alumno> copiaProfunda = new ArrayList<>();
-        String query = """ 
-                SELECT nombre
-                      , dni
-                      , telefono 
-                      , email
-                      , fechaNacimiento 
-                      FROM alumnos""";
-        Statement sentencia = conexion.createStatement();
-        ResultSet resultado = sentencia.executeQuery(query);
-        while (resultado.next()) {
-            Alumno alumno = new Alumno(
-                    resultado.getString("nombre")
-                    , resultado.getString("dni")
-                    , resultado.getString("telefono")
-                    , resultado.getString("email")
-                    , resultado.getDate("fechaNacimiento").toLocalDate());
-            copiaProfunda.add(alumno);
+    public ArrayList<Alumno> get() {
+        return (copiaProfundaAlumnos());
+    }
+
+    private ArrayList<Alumno> copiaProfundaAlumnos() {
+        ArrayList<Alumno> copia = new ArrayList<>(this.coleccionAlumnos.size());
+        for (Alumno alumno : this.coleccionAlumnos) {
+            copia.add(new Alumno(alumno));
         }
-        return copiaProfunda;
+        return copia;
     }
 
-
-    public int getTamano() throws SQLException {
-        String query = """
-                SELECT COUNT(*)
-                FROM alumnos
-                """;
-        Statement sentencia = conexion.createStatement();
-        ResultSet rs = sentencia.executeQuery(query);
-        return rs.getInt("cont");
+    public int getTamano() {
+        return this.coleccionAlumnos.size();
     }
 
-    public void insertar(Alumno alumno) throws OperationNotSupportedException, SQLException {
-
-        if (buscar(alumno) != null) {
+    public void insertar(Alumno alumno) throws OperationNotSupportedException {
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");
+        }
+        int indice = this.coleccionAlumnos.indexOf(alumno);
+        if (indice != -1) {
             throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese dni.");
-        }
+        } else {
 
-        String query = """
-                INSERT INTO alumnos (nombre, dni, telefono, email, fechaNacimiento)
-                VALUES (?, ?, ?, ?, ?)""";
-        PreparedStatement preparedStatement = conexion.prepareStatement(query);
-        preparedStatement.setString(1, alumno.getNombre());
-        preparedStatement.setString(2, alumno.getDni());
-        preparedStatement.setString(3, alumno.getTelefono());
-        preparedStatement.setString(4, alumno.getCorreo());
-        preparedStatement.setDate(5, java.sql.Date.valueOf(alumno.getFechaNacimiento()));
-        preparedStatement.executeUpdate();
+            this.coleccionAlumnos.add(new Alumno(alumno));
+        }
     }
 
-    public Alumno buscar(Alumno alumno) throws SQLException {
-        String query = """
-                SELECT nombre
-                    , telefono
-                    , correo
-                    , dni
-                    , fechaNacimiento
-                FROM alumno
-                Where dni = ?
-                """;
-        PreparedStatement preparedStatement = conexion.prepareStatement(query);
-        preparedStatement.setString(1, alumno.getDni());
-        ResultSet rs = preparedStatement.executeQuery();
-        if (!rs.next())
+    public Alumno buscar(Alumno alumno) {
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: El alumno no puede ser nulo.");
+        }
+        int indice = this.coleccionAlumnos.indexOf(alumno);
+        if (indice == -1) {
             return null;
-        return new Alumno(rs.getString("nombre"),
-                rs.getString("dni"),
-                rs.getString("correo"),
-                rs.getString("telefono"),
-                rs.getDate("fechaNacimiento").toLocalDate()
-        );
+        }
+        return new Alumno(this.coleccionAlumnos.get(indice));
     }
 
 
-    public void borrar(Alumno alumno) throws OperationNotSupportedException, SQLException {
-
-        if (buscar(alumno) == null) {
-            throw new OperationNotSupportedException("ERROR: No existe ese alumno con ese DNI");
+    public void borrar(Alumno alumno) throws OperationNotSupportedException {
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: No se puede borrar un alumno nulo.");
         }
-        String query = """
-                DELETE FROM alumnos
-                WHERE dni = ?
-                """;
-        PreparedStatement preparedStatement = conexion.prepareStatement(query);
-        preparedStatement.setString(1, alumno.getDni());
-        preparedStatement.executeUpdate();
+        int indice = this.coleccionAlumnos.indexOf(alumno);
+        if (indice == -1) {
+            throw new OperationNotSupportedException("ERROR: No existe ningún alumno como el indicado.");
+        }
+        this.coleccionAlumnos.remove(indice);
     }
 
 
 }
-
