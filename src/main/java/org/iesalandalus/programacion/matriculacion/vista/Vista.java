@@ -59,7 +59,7 @@ public class Vista {
             Alumno alumno = Consola.leerAlumno();
             this.controlador.insertar(alumno);
             System.out.println("Alumno insertado correctamente.");
-        } catch (IllegalArgumentException | OperationNotSupportedException e) {
+        } catch (IllegalArgumentException | OperationNotSupportedException | NullPointerException | SQLException e) {
             System.out.println("ERROR: No se pudo insertar el alumno.");
         }
     }
@@ -68,7 +68,7 @@ public class Vista {
         try {
             Alumno alumno = this.controlador.buscar(Consola.getAlumnoPorDni());
             System.out.println(alumno);
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException | NullPointerException | SQLException e) {
             System.out.println("ERROR: No se pudo buscar el alumno.");
         }
     }
@@ -78,7 +78,7 @@ public class Vista {
             Alumno alumno = Consola.getAlumnoPorDni();
             this.controlador.borrar(alumno);
             System.out.println("Alumno borrado correctamente.");
-        } catch (IllegalArgumentException | OperationNotSupportedException | NullPointerException e) {
+        } catch (IllegalArgumentException | OperationNotSupportedException | NullPointerException | SQLException e) {
             System.out.println("ERROR: No se pudo borrar el alumno.");
         }
     }
@@ -197,7 +197,7 @@ public class Vista {
             Matricula matricula = Consola.leerMatricula(alumnoMatricula, asignatura);
             this.controlador.insertar(matricula);
             System.out.println("Matrícula insertada correctamente.");
-        } catch (IllegalArgumentException | OperationNotSupportedException | NullPointerException e) {
+        } catch (IllegalArgumentException | OperationNotSupportedException | NullPointerException | SQLException e) {
             System.out.println("ERROR: No se pudo insertar la matrícula.");
         }
     }
@@ -266,7 +266,7 @@ public class Vista {
                 System.out.println(matricula);
             }
 
-        } catch (IllegalArgumentException | NullPointerException | OperationNotSupportedException e) {
+        } catch (IllegalArgumentException | NullPointerException | OperationNotSupportedException | SQLException e) {
             System.out.println("ERROR: No se pudo mostrar las matrículas por alumno.");
         }
     }

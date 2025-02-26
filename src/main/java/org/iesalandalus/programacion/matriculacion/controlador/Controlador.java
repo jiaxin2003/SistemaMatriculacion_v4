@@ -35,16 +35,16 @@ public class Controlador {
 
     }
 
-    public void insertar(Alumno alumno) throws OperationNotSupportedException {
+    public void insertar(Alumno alumno) throws OperationNotSupportedException, SQLException {
         this.modelo.insertar(alumno);
 
     }
 
-    public Alumno buscar(Alumno alumno) {
+    public Alumno buscar(Alumno alumno) throws SQLException {
         return this.modelo.buscar(alumno);
     }
 
-    public void borrar(Alumno alumno) throws OperationNotSupportedException {
+    public void borrar(Alumno alumno) throws OperationNotSupportedException, SQLException {
         this.modelo.borrar(alumno);
 
     }

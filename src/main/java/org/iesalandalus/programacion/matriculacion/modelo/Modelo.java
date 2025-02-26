@@ -47,17 +47,17 @@ public class Modelo {
         System.exit(0);
     }
 
-    public void insertar(Alumno alumno) throws OperationNotSupportedException {
+    public void insertar(Alumno alumno) throws OperationNotSupportedException, SQLException {
         this.alumnos.insertar(alumno);
 
     }
 
-    public Alumno buscar(Alumno alumno) {
+    public Alumno buscar(Alumno alumno) throws SQLException {
         return this.alumnos.buscar(alumno);
 
     }
 
-    public void borrar(Alumno alumno) throws OperationNotSupportedException {
+    public void borrar(Alumno alumno) throws OperationNotSupportedException, SQLException {
         this.alumnos.borrar(alumno);
     }
 
