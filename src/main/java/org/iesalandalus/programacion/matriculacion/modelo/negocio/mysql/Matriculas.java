@@ -4,15 +4,26 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IMatriculas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 
-public class Matriculas {
+public class Matriculas implements IMatriculas {
     private final ArrayList<Matricula> coleccionMatriculas;
 
     public Matriculas() {
         this.coleccionMatriculas = new ArrayList<>();
+    }
+
+    @Override
+    public void comenzar() {
+
+    }
+
+    @Override
+    public void terminar() {
+
     }
 
     public ArrayList<Matricula> get() throws OperationNotSupportedException {

@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Matricul
 
 import javax.naming.OperationNotSupportedException;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Modelo {
 
     public void comenzar() {
 
-        this.alumnos = new Alumnos();
+        /*this.alumnos = new Alumnos();
         this.asignaturas = new Asignaturas();
         this.ciclosFormativos = new CiclosFormativos();
         this.matriculas = new Matriculas();
@@ -37,7 +38,7 @@ public class Modelo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
 
     }
 
@@ -60,7 +61,7 @@ public class Modelo {
         this.alumnos.borrar(alumno);
     }
 
-    public List<Alumno> getAlumnos() {
+    public List<Alumno> getAlumnos() throws SQLException {
         return this.alumnos.get();
     }
 

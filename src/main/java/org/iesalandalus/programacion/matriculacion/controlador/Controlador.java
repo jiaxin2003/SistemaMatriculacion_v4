@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 import javax.naming.OperationNotSupportedException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Controlador {
@@ -48,7 +49,7 @@ public class Controlador {
 
     }
 
-    public List<Alumno> getAlumnos() {
+    public List<Alumno> getAlumnos() throws SQLException {
         return this.modelo.getAlumnos();
     }
 

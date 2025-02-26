@@ -12,6 +12,7 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 
 
 import javax.naming.OperationNotSupportedException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ public class Vista {
     }
 
     public void mostrarAlumnos() {
+        try{
         List<Alumno> alumnos = this.controlador.getAlumnos();
         if (alumnos.isEmpty()) {
             System.out.println("No hay alumnos.");
@@ -92,6 +94,10 @@ public class Vista {
                 System.out.println(alumno);
             }
         }
+        }catch (SQLException e){
+            System.out.println("ERROR: ");
+        }
+
     }
 
     public void insertarAsignatura() {

@@ -1,19 +1,30 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAsignaturas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 
 
-public class Asignaturas {
+public class Asignaturas implements IAsignaturas {
     private final ArrayList<Asignatura> coleccionAsignaturas;
 
     public Asignaturas() {
         this.coleccionAsignaturas = new ArrayList<>();
     }
 
-        public ArrayList<Asignatura> get() {
+    @Override
+    public void comenzar() {
+
+    }
+
+    @Override
+    public void terminar() {
+
+    }
+
+    public ArrayList<Asignatura> get() {
         return copiaProfundaAsignaturas();
     }
 
